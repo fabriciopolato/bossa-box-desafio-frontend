@@ -3,18 +3,13 @@ import Card from "./Card/Card";
 import { Context } from "../../Context";
 
 const MainContent = () => {
-  const { toolsRepository } = useContext(Context);
-  // const { title, link, description, tags } = toolsRepository;
+  const { toolsRepository, searchString } = useContext(Context);
 
-  return toolsRepository.map((tool) => (
-    <Card
-      key={tool.id}
-      title={tool.title}
-      link={tool.link}
-      description={tool.description}
-      tags={tool.tags}
-    />
-  ));
+  return toolsRepository
+    .filter((elem) =>
+      elem.title.toLowerCase().includes(searchString.toLowerCase())
+    )
+    .map((tool) => <Card key={tool.id} {...tool} />);
 };
 
 export default MainContent;

@@ -8,15 +8,27 @@ export default createGlobalStyle`
   outline: 0;
 }
 
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
 button {
   cursor: pointer;
   border: none;
+  background-color: transparent;
 }
 a {
   text-decoration: none;
 }
 
 input {
-  border: none;
+  /* border: none; */
 }
+
+.full-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 `;
