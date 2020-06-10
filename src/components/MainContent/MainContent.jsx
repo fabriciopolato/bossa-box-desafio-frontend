@@ -4,8 +4,10 @@ import { Context } from "../../Context/Context";
 
 const MainContent = () => {
   const { toolsRepository } = useContext(Context);
-
-  return toolsRepository.map((tool) => <Card key={tool.id} {...tool} />);
+  const filteredTools = toolsRepository.map((tool) => (
+    <Card key={tool.id} {...tool} />
+  ));
+  return filteredTools;
 };
 
 export default MainContent;

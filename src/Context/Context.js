@@ -6,9 +6,8 @@ const Context = createContext({});
 const ContextProvider = ({ children }) => {
   const [toolsRepository, setToolsRepository] = useState([]);
   const [searchString, setSearchString] = useState("");
-  const [modalRemove, setModalRemove] = useState(false);
-  const [modalAdd, setModalAdd] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [isRemoved, setIsRemoved] = useState(false);
 
   const port = 3000;
   const url = `http://localhost:${port}/tools`;
@@ -21,9 +20,7 @@ const ContextProvider = ({ children }) => {
         setToolsRepository(resp.data);
       })
       .catch((err) => console.log(err));
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchString]);
+  }, [checked, searchString, url, isRemoved]);
 
   const handleCheckboxClick = (checkboxRef) => {
     setChecked(checkboxRef.current.checked);
@@ -44,10 +41,9 @@ const ContextProvider = ({ children }) => {
     axios.post(url, data, options);
   };
 
-  const handleRemove = (id) => {
-    setToolsRepository((prevTools) =>
-      prevTools.filter((item) => item.id !== id)
-    );
+  const handleRemove = async (id) => {
+    setIsRemoved(!isRemoved);
+    await axios.delete(`${url}/${id}`);
   };
 
   return (
@@ -58,10 +54,6 @@ const ContextProvider = ({ children }) => {
         setToolsRepository,
         setSearchString,
         searchString,
-        modalRemove,
-        setModalRemove,
-        modalAdd,
-        setModalAdd,
         handleAdd,
         url,
         handleCheckboxClick,

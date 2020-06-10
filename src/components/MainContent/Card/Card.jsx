@@ -2,11 +2,13 @@ import React, { useContext } from "react";
 import { Content } from "./styles";
 import deleteIcon from "../../../assets/icons/delete-icon.svg";
 import { Context } from "../../../Context/Context";
-import Modal from "react-modal";
-import { styleModal } from "../../../Context/styles";
+// import { styleModal } from "../../../Context/styles";
+import Modali, { useModali } from "modali";
 
 const Card = ({ title, link, description, tags, id }) => {
-  const { handleRemove, modalRemove, setModalRemove } = useContext(Context);
+  const [exampleModal, toggleExampleModal] = useModali();
+  const { handleRemove } = useContext(Context);
+  console.log(exampleModal);
 
   const tag = tags.map((item) => `#${item} `);
 
@@ -15,11 +17,11 @@ const Card = ({ title, link, description, tags, id }) => {
       <h2>Remove tool</h2>
       <p>Are you sure you want to remove {title}?</p>
       <div className="buttons">
-        <button onClick={() => setModalRemove(false)}>Cancel</button>
+        <button onClick={toggleExampleModal}>Cancel</button>
         <button
           onClick={() => {
+            toggleExampleModal();
             handleRemove(id);
-            setModalRemove(false);
           }}
         >
           Yes, remove
@@ -28,7 +30,6 @@ const Card = ({ title, link, description, tags, id }) => {
     </>
   );
 
-  Modal.setAppElement("#root");
   return (
     <>
       <Content>
@@ -36,16 +37,19 @@ const Card = ({ title, link, description, tags, id }) => {
           <a href={link}>
             <h4>{title}</h4>
           </a>
-          <button onClick={() => setModalRemove(true)}>
+          <button onClick={toggleExampleModal}>
             <img width={10} src={deleteIcon} alt="delete" /> remove
           </button>
         </div>
         <p>{description}</p>
         <p>{tag}</p>
       </Content>
-      <Modal isOpen={modalRemove} style={styleModal}>
+      <Modali.Modal {...exampleModal}>{body}</Modali.Modal>
+
+      {/* style={styleModal} */}
+      {/* <Modal open={modalRemove} onClose={() => setModalRemove(false)}>
         {body}
-      </Modal>
+      </Modal> */}
     </>
   );
 };
