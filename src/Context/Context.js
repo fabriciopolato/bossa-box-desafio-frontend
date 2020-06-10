@@ -8,19 +8,26 @@ const ContextProvider = ({ children }) => {
   const [searchString, setSearchString] = useState("");
   const [modalRemove, setModalRemove] = useState(false);
   const [modalAdd, setModalAdd] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   const port = 3000;
   const url = `http://localhost:${port}/tools`;
 
   useEffect(() => {
+    const whereToQuery = checked ? "?tags_like=" : "?q=";
     axios
-      .get(url)
+      .get(`${url}/${whereToQuery}${searchString}`)
       .then((resp) => {
         setToolsRepository(resp.data);
       })
       .catch((err) => console.log(err));
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [searchString]);
+
+  const handleCheckboxClick = (checkboxRef) => {
+    setChecked(checkboxRef.current.checked);
+  };
 
   const handleAdd = (toolRefs) => {
     const { title, link, description, tags } = toolRefs;
@@ -56,6 +63,8 @@ const ContextProvider = ({ children }) => {
         modalAdd,
         setModalAdd,
         handleAdd,
+        url,
+        handleCheckboxClick,
       }}
     >
       {children}

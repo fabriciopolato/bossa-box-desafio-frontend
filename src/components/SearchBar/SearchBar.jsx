@@ -7,11 +7,11 @@ import { styleModal } from "../../Context/styles";
 
 const SearchBar = () => {
   const {
-    handleSearch,
     setSearchString,
     modalAdd,
     setModalAdd,
     handleAdd,
+    handleCheckboxClick,
   } = useContext(Context);
 
   const searchRef = useRef(null);
@@ -68,7 +68,7 @@ const SearchBar = () => {
             type="checkbox"
             name="checkbox"
             id="checkbox"
-            onChange={() => handleSearch()}
+            onClick={() => handleCheckboxClick(checkboxRef)}
           />
           <label htmlFor="checkbox">search in tags only</label>
         </div>
